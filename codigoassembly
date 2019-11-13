@@ -1,0 +1,56 @@
+.data
+
+mensagem: 	.asciiz "Digite um numero\n"
+mensagem2: 	.asciiz "Digite outro numero\n"
+mensagem3: 	.asciiz "O maior numero:\n"
+numero: 	.space 4
+segundo:	.space 4
+
+.text
+  #imprimindo mensagem
+main:	li $v0, 4
+	la $a0, mensagem
+	syscall
+  #salvando primeiro num	
+	li $v0, 5
+	syscall
+
+	sw $v0,numero($zero)	
+
+  #imprimindo mensagem2	
+	li $v0, 4
+	la $a0, mensagem2
+	syscall
+	
+  #salvando segundo num
+	li $v0, 5
+	syscall
+
+	sw $v0,segundo($zero)	
+
+  #carregar da memoria
+   	lw $s1, numero($zero)
+	lw $s2, segundo($zero)
+
+  #verifica maior
+	slt $t0, $s1, $s2
+	beq $t0, $zero, s1maior
+	
+	li $v0, 4
+	la $a0, mensagem3
+	syscall	
+	
+	li $v0, 1
+	add $a0, $s2, $zero
+	syscall
+	j fim
+
+s1maior: li $v0, 4
+	la $a0, mensagem3
+	syscall	
+	
+	li $v0, 1
+	add $a0, $s1, $zero
+	syscall
+
+fim:	jr $ra
